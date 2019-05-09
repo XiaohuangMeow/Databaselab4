@@ -779,27 +779,10 @@ def sort_merge_join(buffer):
                         m = buffer.readBlockFromDisk(filename1 + str(f1))
                     else:
                         break
-                # if flag:
-                #     continue
-                # for n in nlist:
-                #     buffer.freeBlockInBuffer(n)
-                # nlist=[]
-                # if l<32//arr_num+1:
-                #     for p in range(arr_num):
-                #         if l*arr_num+p<32:
-                #             n=int(buffer.readBlockFromDisk(filename2+str(l*arr_num+p)))
-                #             nlist.append(n)
-                #     n=nlist[f2]
-            # if f2 < 32:
-            #     buffer.freeBlockInBuffer(n)
-            #     n = buffer.readBlockFromDisk(filename2 + str(f2))
-            # else:
-            #     break
     if cnt % 12 != 0:
         buffer.writeBlockToDisk("sort_merge_join_result" + str((cnt - 1) // 12), k)
-    buffer.freeBlockInBuffer(m)
-    buffer.freeBlockInBuffer(n)
-    buffer.freeBlockInBuffer(k)
+    for i in range(8):
+        buffer.freeBlockInBuffer(i)
     filename3 = "binary_selection_temp_S"
     for i in range(16):
         ExtMem.dropBlockOnDisk(filename1 + str(i))
@@ -811,6 +794,75 @@ def sort_merge_join(buffer):
     for i in range(32):
         ExtMem.dropBlockOnDisk("sort_S" + str(i))
 
+def hash_join(buffer):
+    dictR = {}
+    dictS = {}
+    filename1="r"
+    filename2="s"
+    hash=10
+    for i in range(16):
+        m=int(buffer.readBlockFromDisk(filename1+str(i)))
+        for j in range(7):
+            a=int(buffer.data[m][2*j])
+            if a%hash in dictR.keys():
+                dictR[a%hash].append((i,j))
+            else:
+                dictR[a%hash]=[]
+                dictR[a%hash].append((i,j))
+        buffer.freeBlockInBuffer(m)
+    for i in range(32):
+        n = int(buffer.readBlockFromDisk(filename2 + str(i)))
+        for j in range(7):
+            c = int(buffer.data[n][2 * j])
+            # d = buffer.data[n][2 * j + 1]
+            if c%hash in dictS.keys():
+                dictS[c%hash].append((i, j))
+            else:
+                dictS[c%hash] = []
+                dictS[c%hash].append((i, j))
+        buffer.freeBlockInBuffer(n)
+    for h in range(hash):
+        if h in dictR.keys():
+            dictR[h]=sorted(dictR[h])
+        if h in dictS.keys():
+            dictS[h]=sorted(dictS[h])
+    cnt = 0
+    k=buffer.getNewBlockInBuffer()
+    for h in range(hash):
+        for i in range(8):
+            buffer.freeBlockInBuffer(i)
+        if h not in dictR.keys() or h not in dictS.keys():
+            continue
+        listR=dictR[h]
+        listS=dictS[h]
+        for i,r in enumerate(listR):
+            # print(i,r)
+            x=r[1]
+            m=buffer.readBlockFromDisk(filename1+str(r[0]))
+            a=buffer.data[m][2*x]
+            b=buffer.data[m][2*x+1]
+            for j,s in enumerate(listS):
+                y=s[1]
+                n=buffer.readBlockFromDisk(filename2+str(s[0]))
+                c = buffer.data[n][2 * y]
+                d = buffer.data[n][2 * y + 1]
+                if a==c:
+                    buffer.data[k].append(a)
+                    buffer.data[k].append(b)
+                    buffer.data[k].append(c)
+                    buffer.data[k].append(d)
+                    print(a,b,c,d)
+                    cnt+=4
+                    if cnt%12==0:
+                        buffer.writeBlockToDisk("hash_join_result" + str((cnt - 1) // 12), k)
+                        k=buffer.getNewBlockInBuffer()
+                buffer.freeBlockInBuffer(n)
+            buffer.freeBlockInBuffer(m)
+    if cnt % 12 != 0:
+        buffer.writeBlockToDisk("hash_join_result" + str((cnt - 1) // 12), k)
+    buffer.freeBlockInBuffer(k)
+
+
 if __name__ == '__main__':
     buffer = ExtMem.Buffer(520, 64)
     # liner_selection(buffer)
@@ -818,8 +870,8 @@ if __name__ == '__main__':
     # b_plus_tree_selection(buffer)
     # project(buffer,"R","A")
     # nest_loop_join(buffer)
-    sort_merge_join(buffer)
-    print(buffer.numIO)
+    # sort_merge_join(buffer)
+    # hash_join(buffer)
     # R,S=generateRS()
     # write_r_to_disk(buffer,R)
     # write_s_to_disk(buffer,S)

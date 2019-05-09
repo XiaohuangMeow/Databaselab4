@@ -2,21 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f3bdbff-33a6-4fc1-ad65-8e29d3e2eb9a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/sort_merge_join_result38.blk" beforeDir="false" afterPath="$PROJECT_DIR$/Block/sort_merge_join_result38.blk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/sort_merge_join_result39.blk" beforeDir="false" afterPath="$PROJECT_DIR$/Block/sort_merge_join_result39.blk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/sort_merge_join_result40.blk" beforeDir="false" afterPath="$PROJECT_DIR$/Block/sort_merge_join_result40.blk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/sort_merge_join_result41.blk" beforeDir="false" afterPath="$PROJECT_DIR$/Block/sort_merge_join_result41.blk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/sort_merge_join_result42.blk" beforeDir="false" afterPath="$PROJECT_DIR$/Block/sort_merge_join_result42.blk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/sort_merge_join_result43.blk" beforeDir="false" afterPath="$PROJECT_DIR$/Block/sort_merge_join_result43.blk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/sort_merge_join_result44.blk" beforeDir="false" afterPath="$PROJECT_DIR$/Block/sort_merge_join_result44.blk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/sort_merge_join_result45.blk" beforeDir="false" afterPath="$PROJECT_DIR$/Block/sort_merge_join_result45.blk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/sort_merge_join_result46.blk" beforeDir="false" afterPath="$PROJECT_DIR$/Block/sort_merge_join_result46.blk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/sort_merge_join_result90.blk" beforeDir="false" afterPath="$PROJECT_DIR$/Block/sort_merge_join_result90.blk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/sort_merge_join_result91.blk" beforeDir="false" afterPath="$PROJECT_DIR$/Block/sort_merge_join_result91.blk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/sort_merge_join_result92.blk" beforeDir="false" afterPath="$PROJECT_DIR$/Block/sort_merge_join_result92.blk" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/新建文本文档.txt" beforeDir="false" afterPath="$PROJECT_DIR$/新建文本文档.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,10 +28,27 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="833" column="41" selection-start-line="833" selection-start-column="41" selection-end-line="833" selection-end-column="41" />
+            <state relative-caret-position="330">
+              <caret line="874" selection-start-line="874" selection-end-line="874" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#200#1788#0" />
+                <element signature="e#1836#1880#0" />
+                <element signature="e#1933#2184#0" />
+                <element signature="e#2216#2436#0" />
+                <element signature="e#2485#2721#0" />
+                <element signature="e#2754#5747#0" />
+                <element signature="e#5783#6955#0" />
+                <element signature="e#7008#9553#0" />
+                <element signature="e#9586#13166#0" />
+                <element signature="e#13202#14381#0" />
+                <element signature="e#14418#15249#0" />
+                <element signature="e#15293#15580#0" />
+                <element signature="e#15624#15911#0" />
+                <element signature="e#15953#17535#0" />
+                <element signature="e#17584#18365#0" />
+                <element signature="e#18400#20315#0" />
+                <element signature="e#20350#28429#0" />
               </folding>
             </state>
           </provider>
@@ -98,6 +102,9 @@
       <find>cccccccc</find>
       <find>dddd</find>
       <find>print</find>
+      <find>a,b,c,d</find>
+      <find>print(cnt</find>
+      <find>20</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -116,8 +123,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-89" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="507" />
+    <option name="y" value="50" />
     <option name="width" value="1224" />
     <option name="height" value="980" />
   </component>
@@ -233,7 +241,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="406" y="40" width="979" height="784" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" sideWeight="0.5020325" side_tool="true" weight="0.22523117" />
@@ -245,8 +253,8 @@
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" />
       <window_info anchor="bottom" id="Version Control" order="5" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" visible="true" weight="0.32719547" />
-      <window_info anchor="bottom" id="Debug" order="7" weight="0.39886847" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" visible="true" weight="0.35429448" />
+      <window_info anchor="bottom" id="Debug" order="7" weight="0.39739883" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="10" />
@@ -273,13 +281,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ExtMem.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="45" selection-start-line="45" selection-end-line="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/relation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
@@ -294,12 +295,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ExtMem.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="833" column="41" selection-start-line="833" selection-start-column="41" selection-end-line="833" selection-end-column="41" />
+        <state relative-caret-position="330">
+          <caret line="874" selection-start-line="874" selection-end-line="874" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#200#1788#0" />
+            <element signature="e#1836#1880#0" />
+            <element signature="e#1933#2184#0" />
+            <element signature="e#2216#2436#0" />
+            <element signature="e#2485#2721#0" />
+            <element signature="e#2754#5747#0" />
+            <element signature="e#5783#6955#0" />
+            <element signature="e#7008#9553#0" />
+            <element signature="e#9586#13166#0" />
+            <element signature="e#13202#14381#0" />
+            <element signature="e#14418#15249#0" />
+            <element signature="e#15293#15580#0" />
+            <element signature="e#15624#15911#0" />
+            <element signature="e#15953#17535#0" />
+            <element signature="e#17584#18365#0" />
+            <element signature="e#18400#20315#0" />
+            <element signature="e#20350#28429#0" />
           </folding>
         </state>
       </provider>
