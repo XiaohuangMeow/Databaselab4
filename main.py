@@ -590,53 +590,168 @@ def nest_loop_join(buffer):
         buffer.writeBlockToDisk("nest_loop_join_result" + str((cnt - 1) / 12), k)
     buffer.freeBlockInBuffer(k)
 
-
 def sort_merge_join(buffer):
     merge_sort_R(buffer)
     merge_sort_S(buffer)
     filename1 = "binary_selection_temp_R"
     filename2 = "binary_selection_temp2_S"
-    m = buffer.readBlockFromDisk(filename1 + "0")
-    n = buffer.readBlockFromDisk(filename2 + "0")
+    m = int(buffer.readBlockFromDisk(filename1 + "0"))
+    arr_num=6
+    nlist=[]
+    l=0
+    for i in range(arr_num):
+        n = int(buffer.readBlockFromDisk(filename2 + str(i)))
+        nlist.append(n)
     k = buffer.getNewBlockInBuffer()
     cnt = 0
     f1 = 0
     f2 = 0
     i = 0
     j = 0
+    before=0
+    pre_f1 = f1
+    pre_i=i
     pre_f2 = f2
     pre_j = j
     flag = False
+    clear=False
+    n=nlist[f2]
+    before_a=0
     while True:
+        # print(cnt//4)
         a = int(buffer.data[m][2 * i])
         b = int(buffer.data[m][2 * i + 1])
         c = int(buffer.data[n][2 * j])
         d = int(buffer.data[n][2 * j + 1])
-        if a < c:
-            i += 1
-            if flag:
-                flag=False
-                buffer.freeBlockInBuffer(n)
+        if a!=before_a:
+            before_a=a
+            pre_i=i
+            pre_f1=f1
+        if flag and not a==c or clear:
+            # print(flag,not a==c,clear)
+            # print("开始回溯","clear="+str(clear))
+            # print(pre_j,pre_f2)
+            if not clear:
+                flag = False
+                i+=1
+                # print(i)
                 j=pre_j
                 f2=pre_f2
-                buffer.readBlockFromDisk(filename2+str(f2))
+                n=nlist[f2]
+                # print("回溯到",j,f2,n)
+            else:
+                clear=False
+                if flag:
+                    # pre_f1=f1
+                    # pre_i=i
+                    flag = False
+                    j = pre_j
+                    f2 = pre_f2
+                    n = nlist[f2]
+                    while True:
+                        a = int(buffer.data[m][2 * i])
+                        b = int(buffer.data[m][2 * i + 1])
+                        c = int(buffer.data[n][2 * j])
+                        d = int(buffer.data[n][2 * j + 1])
+                        # print()
+                        # print("clear 过程:")
+                        # print("元组",a,b,c,d)
+                        # print(i,j)
+                        if a<c:
+                            i+=1
+                        elif a>c:
+                            j+=1
+                            # print("break")
+                            break
+                        else:
+                            buffer.data[k].append(a)
+                            buffer.data[k].append(b)
+                            buffer.data[k].append(c)
+                            buffer.data[k].append(d)
+                            print(a,b,c,d)
+                            before = a
+                            flag = True
+                            j += 1
+                            cnt += 4
+                            if cnt % 12 == 0:
+                                buffer.writeBlockToDisk("sort_merge_join_result" + str((cnt - 1) // 12), k)
+                                k = buffer.getNewBlockInBuffer()
+                        if i==7:
+                            i = 0
+                            f1 += 1
+                            if f1 < 16:
+                                buffer.freeBlockInBuffer(m)
+                                m = buffer.readBlockFromDisk(filename1 + str(f1))
+                            else:
+                                break
+                        if j == 7:
+                            j = 0
+                            f2 += 1
+                            if f2 < len(nlist):
+                                # print("a")
+                                n = nlist[f2]
+                            else:
+                                # print("b")
+                                i+=1
+                                j=pre_j
+                                f2=pre_f2
+                                n=nlist[f2]
+                                # print("new i j",i,j)
+                                if i == 7:
+                                    i = 0
+                                    f1 += 1
+                                    if f1 < 16:
+                                        buffer.freeBlockInBuffer(m)
+                                        m = buffer.readBlockFromDisk(filename1 + str(f1))
+                                    else:
+                                        break
+                clear=False
+                f2=0
+                pre_f2=0
+                pre_j=0
+                j=0
+                buffer.freeBlockInBuffer(m)
+                m=buffer.readBlockFromDisk(filename1+str(pre_f1))
+                i=pre_i
+                f1=pre_f1
+                pre_f1=0
+                pre_i=0
+                for n in nlist:
+                    buffer.freeBlockInBuffer(n)
+                nlist=[]
+                if l<32//arr_num+1:
+                    for p in range(arr_num):
+                        if l*arr_num+p<32:
+                            n=int(buffer.readBlockFromDisk(filename2+str(l*arr_num+p)))
+                            nlist.append(n)
+                    n=nlist[f2]
+                else:
+                    break
+                continue
+        elif a < c:
+            # print("a<c")
+            i += 1
         elif a > c:
+            # print("a>c")
             j += 1
         else:
-            if not flag:
-                pre_f2=f2
-                pre_j=j
-            flag=True
             buffer.data[k].append(a)
             buffer.data[k].append(b)
             buffer.data[k].append(c)
             buffer.data[k].append(d)
-            j += 1
-            print(a, b, c, d)
-            cnt += 4
-            if cnt % 12 == 0:
+            print(a,b,c,d)
+            if not flag:
+                # print("remember")
+                pre_f2=f2
+                pre_j=j
+                # print(f2,j)
+            before=a
+            flag=True
+            j+=1
+            cnt+=4
+            if cnt%12==0:
                 buffer.writeBlockToDisk("sort_merge_join_result" + str((cnt - 1) // 12), k)
-                k = buffer.getNewBlockInBuffer()
+                k=buffer.getNewBlockInBuffer()
         if i == 7:
             i = 0
             f1 += 1
@@ -648,11 +763,38 @@ def sort_merge_join(buffer):
         if j == 7:
             j = 0
             f2 += 1
-            if f2 < 32:
-                buffer.freeBlockInBuffer(n)
-                n = buffer.readBlockFromDisk(filename2 + str(f2))
+            if f2<len(nlist):
+                n=nlist[f2]
             else:
-                break
+                # print("clear  clear")
+                # f2=0
+                i+=1
+                l+=1
+                clear=True
+                if i == 7:
+                    i = 0
+                    f1 += 1
+                    if f1 < 16:
+                        buffer.freeBlockInBuffer(m)
+                        m = buffer.readBlockFromDisk(filename1 + str(f1))
+                    else:
+                        break
+                # if flag:
+                #     continue
+                # for n in nlist:
+                #     buffer.freeBlockInBuffer(n)
+                # nlist=[]
+                # if l<32//arr_num+1:
+                #     for p in range(arr_num):
+                #         if l*arr_num+p<32:
+                #             n=int(buffer.readBlockFromDisk(filename2+str(l*arr_num+p)))
+                #             nlist.append(n)
+                #     n=nlist[f2]
+            # if f2 < 32:
+            #     buffer.freeBlockInBuffer(n)
+            #     n = buffer.readBlockFromDisk(filename2 + str(f2))
+            # else:
+            #     break
     if cnt % 12 != 0:
         buffer.writeBlockToDisk("sort_merge_join_result" + str((cnt - 1) // 12), k)
     buffer.freeBlockInBuffer(m)
@@ -669,7 +811,6 @@ def sort_merge_join(buffer):
     for i in range(32):
         ExtMem.dropBlockOnDisk("sort_S" + str(i))
 
-
 if __name__ == '__main__':
     buffer = ExtMem.Buffer(520, 64)
     # liner_selection(buffer)
@@ -678,24 +819,16 @@ if __name__ == '__main__':
     # project(buffer,"R","A")
     # nest_loop_join(buffer)
     sort_merge_join(buffer)
+    print(buffer.numIO)
     # R,S=generateRS()
     # write_r_to_disk(buffer,R)
     # write_s_to_disk(buffer,S)
     # print_R_S(buffer)
-
-# for i in range(2):
-#     for j in range(8):
-#         n=buffer.readBlockFromDisk("binary_selection_temp_R"+str(8*i+j))
-#     for x in range(8):
-#         for y in range(7):
-#             print(buffer.data[x][y*2],buffer.data[x][y*2+1])
-#     for k in range(8):
-#         buffer.freeBlockInBuffer(k)
-# for i in range(2):
-#     for j in range(8):
-#         n=buffer.readBlockFromDisk("r"+str(8*i+j))
-#     for x in range(8):
-#         for y in range(7):
-#             print(" ",buffer.data[x][y*2],buffer.data[x][y*2+1])
-#     for k in range(8):
-#         buffer.freeBlockInBuffer(k)
+    # for i in range(2):
+    #     for j in range(8):
+    #         n=buffer.readBlockFromDisk("sort_merge_join_result"+str(8*i+j))
+    #     for x in range(8):
+    #         for y in range(7):
+    #             print(buffer.data[x][y*2],buffer.data[x][y*2+1])
+    #     for k in range(8):
+    #         buffer.freeBlockInBuffer(k)
